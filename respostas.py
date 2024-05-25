@@ -44,3 +44,5 @@ def despedida(nome, telefone, msg=''):
     return (
         f'Perfeito! {nome} iremos analisar a sua solicitação e retornaremos o contato com seu orçamento no e-mail {email}'
         f' então fique de olho, se precisarmos de mais algum detalhe também entraremos em contato pelo e-mail.\n\nAtt, \nMichael Dev ')
+def agradecimento(nome):
+    return(f'{nome} nós que agradecemos o contato.\nAté logo')

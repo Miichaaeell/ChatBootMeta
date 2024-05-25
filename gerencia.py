@@ -1,14 +1,11 @@
 import respostas
-from funcoesbd import cadastro
-
-
+from funcoesbd import cadastro, consultar_atendimento, atualizar_atendimento
+from atendimento import atendimento
 class clientes:
     def __init__(self, nome, telefone, msg):
         self.nome = nome
         self.telefone = telefone
         self.msg = msg
-
-
 def filtar_dados(dados):
     response = {}
     response['nome'] = dados['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
@@ -18,15 +15,23 @@ def filtar_dados(dados):
     response['id'] = dados['entry'][0]['changes'][0]['value']['messages'][0]['id']
     return response
 
-
 def cadastrar_usuario(dados):
     cliente = clientes(dados['nome'], dados['telefone'], dados['msg'].lower())
     cadastrado = cadastro(cliente.nome, cliente.telefone)
-    return cliente, cadastrado
+    atendente = consultar_atendimento(cliente.telefone)
+    return cliente, cadastrado, atendente
 
 
-def reply(usuario, validacao):
-    if usuario.msg in 'bom dia boa tarde boa noite ola oi':
+def reply(usuario, validacao, atendente):
+    if atendente == 'sim' or 'atendimento' in usuario.msg or 'atendente' in usuario.msg:
+        atualizar_atendimento(usuario.telefone,'sim')
+        resposta = atendimento(usuario.nome, usuario.msg)
+        if resposta == 'finalizado':
+            atualizar_atendimento(usuario.telefone, 'nao')
+            return respostas.agradecimento(usuario.nome)
+        else:
+            return resposta
+    elif usuario.msg in 'bom dia boa tarde boa noite ola oi':
         return respostas.boas_vindas(usuario.nome, validacao)
     elif usuario.msg in 'orçamento , orcamento':
         return respostas.orcamento1(usuario.nome)

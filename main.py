@@ -31,8 +31,7 @@ def bot():
     if 'contacts' in msg['entry'][0]['changes'][0]['value']:
         msg_usuario = filtar_dados(msg)
         verificar_cadastro = cadastrar_usuario(msg_usuario)
-        res = reply(verificar_cadastro[0], verificar_cadastro[1])
-        print(res)
+        res = reply(verificar_cadastro[0], verificar_cadastro[1], verificar_cadastro[2])
         url = f'https://graph.facebook.com/v19.0/254050617801879/messages'
         data = resposta_formatada(res)
         json.dumps(data)
@@ -42,7 +41,7 @@ def bot():
                              json=data)
         return str(f'{r}')
     else:
-        return 'Notificações'
+        return ('Notificação')
 
 
 if __name__ == '__main__':

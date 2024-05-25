@@ -17,11 +17,11 @@ def cadastro(nome, telefone):
         database='railway',
     )
     cursor = conexao.cursor()
-    seleciona = f'SELECT Nome, Telefone FROM clientes'
+    seleciona = f'SELECT Telefone, Nome FROM clientes'
     cursor.execute(seleciona)
     dados = cursor.fetchall()
     cadastrado = False
-    for cliente, numero in dados:
+    for numero, usuario in dados:
         if int(numero) == int(telefone):
             cadastrado = True
     if cadastrado == False:
@@ -62,12 +62,10 @@ def consultar_email(telefone):
         database='railway',
     )
     cursor = conexao.cursor()
-    comando = f'SELECT Email, Telefone FROM clientes WHERE Telefone = {telefone}'
+    comando = f'SELECT Email FROM clientes WHERE Telefone = {telefone}'
     cursor.execute(comando)
     contato = cursor.fetchall()
-    for e_mail, telefone in contato:
-        email = e_mail
-    return str(email)
+    return str(contato[0][0])
     cursor.close()
     conexao.close()
 
@@ -91,3 +89,33 @@ def enviar_email(nome='', telefone='', msg=''):
         s.sendmail(msg['From'], msg['To'], msg.as_string().encode('utf-8'))
         print(msg['To'])
         print('Email enviado com sucesso!')
+def consultar_atendimento(telefone):
+    conexao = mysql.connector.connect(
+        host='monorail.proxy.rlwy.net',
+        port='34425',
+        user='root',
+        password=f'{key_bd}',
+        database='railway',
+    )
+    cursor = conexao.cursor()
+    comando = f'SELECT Atendimento FROM clientes WHERE Telefone = {telefone}'
+    cursor.execute(comando)
+    atendente = cursor.fetchall()
+    return atendente[0][0]
+    cursor.close()
+    conexao.close()
+def atualizar_atendimento(telefone, atualizar):
+    conexao = mysql.connector.connect(
+        host='monorail.proxy.rlwy.net',
+        port='34425',
+        user='root',
+        password=f'{key_bd}',
+        database='railway',
+    )
+    cursor = conexao.cursor()
+    comando = f'UPDATE clientes SET Atendimento = "{atualizar}" WHERE Telefone = {telefone}'
+    cursor.execute(comando)
+    conexao.commit()
+    cursor.close()
+    conexao.close()
+
