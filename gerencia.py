@@ -1,5 +1,5 @@
 import respostas
-from funcoesbd import cadastro, consultar_atendimento, atualizar_atendimento
+from funcoesbd import cadastro, consultar_fluxo, atualizar_fluxo
 from atendimento import atendimento
 from os import getenv
 import json
@@ -22,29 +22,35 @@ def filtrar_dados(dados):
 def cadastrar_usuario(dados):
     cliente = clientes(dados['nome'], dados['telefone'], dados['msg'].lower())
     cadastrado = cadastro(cliente.nome, cliente.telefone)
-    atendente = consultar_atendimento(cliente.telefone)
+    atendente = consultar_fluxo(cliente.telefone)
     return cliente, cadastrado, atendente
 
 
-def reply(usuario, validacao, atendente):
-    if atendente == 'sim' or 'atendimento' in usuario.msg or 'atendente' in usuario.msg:
-        atualizar_atendimento(usuario.telefone,'sim')
+def reply(usuario, validacao, fluxo):
+    if fluxo == 'atendimento' or 'atendimento' in usuario.msg or 'atendente' in usuario.msg:
+        atualizar_fluxo(usuario.telefone,'atendimento')
         resposta = atendimento(usuario.nome, usuario.msg)
         if resposta == 'finalizado':
-            atualizar_atendimento(usuario.telefone, 'nao')
+            atualizar_fluxo(usuario.telefone, 'inicial')
             return respostas.agradecimento(usuario.nome, usuario.telefone)
         else:
             return respostas.resposta_formatada(resposta, usuario.telefone)
-    elif usuario.msg in 'bom dia boa tarde boa noite ola oi':
+    elif fluxo == 'inicial' and usuario.msg in 'bom dia boa tarde boa noite ola oi':
         return respostas.boas_vindas(usuario.nome, validacao, usuario.telefone)
-    elif usuario.msg in 'orçamento , orcamento':
-        return respostas.orcamento1(usuario.nome, usuario.telefone)
-    elif 'email:' in usuario.msg:
-        return respostas.orcamento(usuario.nome, usuario.msg, usuario.telefone)
-    elif usuario.msg in 'serviços servico':
+    elif fluxo == 'inicial' and usuario.msg in 'serviços servico':
+        atualizar_fluxo(usuario.telefone, 'Informações')
         return respostas.servicos(usuario.nome, usuario.telefone)
-    elif 'automação' in usuario.msg or 'automacao' in usuario.msg or 'sistema' in usuario.msg:
+    elif fluxo == 'Informações' or usuario.msg in 'orçamento , orcamento':
+        atualizar_fluxo(usuario.telefone, 'Cadastro E-mail')
+        return respostas.cadastro_email(usuario.nome, usuario.telefone)
+    elif fluxo == 'Cadastro E-mail':
+        atualizar_fluxo(usuario.telefone, 'Finalizando Orçamento')
+        return respostas.orcamento(usuario.nome, usuario.msg, usuario.telefone)
+    elif fluxo == 'Finalizando Orçamento':
+        atualizar_fluxo(usuario.telefone, 'inicial')
         return respostas.despedida(usuario.nome, usuario.telefone, usuario.msg)
+
+
     else:
         return 'Desculpe, mas faltou alguma informação, poderia me enviar os dados novamente, lembrando que todas as informações são essências para nosso atendimento'
 

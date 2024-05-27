@@ -26,7 +26,7 @@ def cadastro(nome, telefone):
             cadastrado = True
     if cadastrado == False:
         nome = nome.split()
-        cadastrando = f'INSERT INTO `railway`.`clientes` (`Nome`, `Telefone`) VALUES ("{nome[0]}", "{telefone}")'
+        cadastrando = f'INSERT INTO `railway`.`clientes` (`Nome`, `Telefone`, `Fluxo`) VALUES ("{nome[0]}", "{telefone}", "inicial")'
         cursor.execute(cadastrando)
         conexao.commit()
         return str('falso')
@@ -46,7 +46,7 @@ def cadastrar_email(email, telefone):
     )
 
     cursor = conexao.cursor()
-    comando = f"UPDATE `railway`.`clientes` SET `Email` = '{email[6:].strip()}' WHERE (`Telefone` = '{telefone}')"
+    comando = f"UPDATE `railway`.`clientes` SET `Email` = '{email.strip()}' WHERE (`Telefone` = '{telefone}')"
     cursor.execute(comando)
     conexao.commit()
     conexao.close()
@@ -89,7 +89,7 @@ def enviar_email(nome='', telefone='', msg=''):
         s.sendmail(msg['From'], msg['To'], msg.as_string().encode('utf-8'))
         print(msg['To'])
         print('Email enviado com sucesso!')
-def consultar_atendimento(telefone):
+def consultar_fluxo(telefone):
     conexao = mysql.connector.connect(
         host='monorail.proxy.rlwy.net',
         port='34425',
@@ -98,13 +98,13 @@ def consultar_atendimento(telefone):
         database='railway',
     )
     cursor = conexao.cursor()
-    comando = f'SELECT Atendimento FROM clientes WHERE Telefone = {telefone}'
+    comando = f'SELECT Fluxo FROM clientes WHERE Telefone = {telefone}'
     cursor.execute(comando)
     atendente = cursor.fetchall()
     return atendente[0][0]
     cursor.close()
     conexao.close()
-def atualizar_atendimento(telefone, atualizar):
+def atualizar_fluxo(telefone, atualizar):
     conexao = mysql.connector.connect(
         host='monorail.proxy.rlwy.net',
         port='34425',
@@ -113,7 +113,7 @@ def atualizar_atendimento(telefone, atualizar):
         database='railway',
     )
     cursor = conexao.cursor()
-    comando = f'UPDATE clientes SET Atendimento = "{atualizar}" WHERE Telefone = {telefone}'
+    comando = f'UPDATE clientes SET Fluxo = "{atualizar}" WHERE Telefone = {telefone}'
     cursor.execute(comando)
     conexao.commit()
     cursor.close()

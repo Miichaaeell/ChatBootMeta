@@ -1,4 +1,10 @@
+# import PySimpleGUI as sg
 from respostas import resposta_formatada
+def atendimento(nome, msg):
+    print(f'Nome do cliente -> {nome}')
+    print(f'Mensagem do cliente -> {msg}')
+    resposta = input(f'Resposta -> ')
+    return str(resposta)
 # def atendimento(nome, msg):
 #     layout = [
 #         [sg.Text(f'Nome cliente -> {nome}')],
@@ -16,8 +22,12 @@ from respostas import resposta_formatada
 #
 #     return resposta
 
-def atendimento(nome, msg):
-    print(f'Nome do cliente -> {nome}')
-    print(f'Mensagem do cliente -> {msg}')
-    resposta = input(f'Resposta -> ')
-    return str(resposta)
+
+# def atendimento(nome, msg):
+#     popup = sg.popup_get_text(message=f'{msg}', title=f'Cliente {nome}')
+#     if popup == None or popup == '':
+#         return 'Finalizado'
+#     else:
+#         return popup
+
+

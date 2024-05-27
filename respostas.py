@@ -20,14 +20,13 @@ def boas_vindas(nome, validacao, telefone):
 def orcamento(nome, email, telefone):
     cadastrar_email(email, telefone)
     return resposta_formatada(f'{nome}, estamos quase lá, só mais algumas informações:'
-            f'\n\nTipo de projeto* (sistema ou automação)*: \n\nNome completo:'
-            f'\n\nDescreva com o máximo de detalhes possivel o que deseja fazer:', telefone)
+            f'\n\nNome completo: \n\nTipo de projeto* (sistema ou automação):'
+            f'\n\nDescreva com o máximo de detalhes possível o que deseja fazer:', telefone)
 
 
-def orcamento1(nome, telefone):
+def cadastro_email(nome, telefone):
     return resposta_formatada(
-        f'{nome} Obrigado por nos escolher, por favor me informe um e-mail para contado. '
-        f'\nOBS: para que seja feito o cadastro corretamente insira o e-mail como no exemplo: \n"email: meuemail@email.com":', telefone)
+        f'{nome} Obrigado por nos escolher, por favor me informe um e-mail válido para contado.', telefone)
 
 
 def servicos(nome='', telefone=''):
