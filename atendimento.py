@@ -1,5 +1,3 @@
-import PySimpleGUI as sg
-from random import randint
 from respostas import resposta_formatada
 # def atendimento(nome, msg):
 #     layout = [
