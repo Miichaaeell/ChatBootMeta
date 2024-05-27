@@ -29,6 +29,8 @@ pyasn1==0.6.0
 pyasn1_modules==0.4.0
 pycparser==2.22
 PyJWT==2.8.0
+PySimpleGUI==5.0.4
+pywin32==306
 requests==2.31.0
 rsa==4.9
 twilio==9.0.5
