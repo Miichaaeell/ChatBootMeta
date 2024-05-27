@@ -1,20 +1,15 @@
 import requests
 import json
 from flask import Flask, request
-import os
-from gerencia import filtar_dados, cadastrar_usuario, reply
+from os import getenv
+from gerencia import filtrar_dados, cadastrar_usuario, reply, enviar_resposta
 from respostas import resposta_formatada
-
-token = os.getenv('TOKEN')
-Bearer_TOKEN = os.getenv('Bearer_TOKEN')
+token = getenv('TOKEN')
+Bearer_TOKEN = getenv('Bearer_TOKEN')
 app = Flask(__name__)
-
-
 @app.route('/')
 def home():
     return f'Hello World \nWebhook Online'
-
-
 @app.get('/webhook')
 def verify_key():
     key = request.args.get('hub.challenge')
@@ -23,26 +18,19 @@ def verify_key():
         return key
     else:
         print('Token incorreto')
-
-
 @app.post('/webhook')
 def bot():
     msg = request.get_json()
     if 'contacts' in msg['entry'][0]['changes'][0]['value']:
-        msg_usuario = filtar_dados(msg)
+        msg_usuario = filtrar_dados(msg)
         verificar_cadastro = cadastrar_usuario(msg_usuario)
         res = reply(verificar_cadastro[0], verificar_cadastro[1], verificar_cadastro[2])
-        url = f'https://graph.facebook.com/v19.0/254050617801879/messages'
-        data = resposta_formatada(res)
-        json.dumps(data)
-        r = requests.request(method='POST',
-                             url=url,
-                             headers={'Authorization': f'Bearer {Bearer_TOKEN}'},
-                             json=data)
-        return str(f'{r}')
+        status = enviar_resposta(res)
+        return str(f'{status}')
     else:
         return ('Notificação')
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+

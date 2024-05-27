@@ -1,12 +1,16 @@
 import respostas
 from funcoesbd import cadastro, consultar_atendimento, atualizar_atendimento
 from atendimento import atendimento
+from os import getenv
+import json
+import requests
+Bearer_TOKEN = getenv('Bearer_TOKEN')
 class clientes:
     def __init__(self, nome, telefone, msg):
         self.nome = nome
         self.telefone = telefone
         self.msg = msg
-def filtar_dados(dados):
+def filtrar_dados(dados):
     response = {}
     response['nome'] = dados['entry'][0]['changes'][0]['value']['contacts'][0]['profile']['name']
     response['telefone'] = dados['entry'][0]['changes'][0]['value']['contacts'][0]['wa_id']
@@ -28,18 +32,26 @@ def reply(usuario, validacao, atendente):
         resposta = atendimento(usuario.nome, usuario.msg)
         if resposta == 'finalizado':
             atualizar_atendimento(usuario.telefone, 'nao')
-            return respostas.agradecimento(usuario.nome)
+            return respostas.agradecimento(usuario.nome, usuario.telefone)
         else:
-            return resposta
+            return respostas.resposta_formatada(resposta, usuario.telefone)
     elif usuario.msg in 'bom dia boa tarde boa noite ola oi':
-        return respostas.boas_vindas(usuario.nome, validacao)
+        return respostas.boas_vindas(usuario.nome, validacao, usuario.telefone)
     elif usuario.msg in 'orçamento , orcamento':
-        return respostas.orcamento1(usuario.nome)
+        return respostas.orcamento1(usuario.nome, usuario.telefone)
     elif 'email:' in usuario.msg:
         return respostas.orcamento(usuario.nome, usuario.msg, usuario.telefone)
     elif usuario.msg in 'serviços servico':
-        return respostas.servicos(usuario.nome)
+        return respostas.servicos(usuario.nome, usuario.telefone)
     elif 'automação' in usuario.msg or 'automacao' in usuario.msg or 'sistema' in usuario.msg:
         return respostas.despedida(usuario.nome, usuario.telefone, usuario.msg)
     else:
         return 'Desculpe, mas faltou alguma informação, poderia me enviar os dados novamente, lembrando que todas as informações são essências para nosso atendimento'
+
+def enviar_resposta(msg):
+    json.dumps(msg)
+    r = requests.request(method='POST',
+                         url='https://graph.facebook.com/v19.0/254050617801879/messages',
+                         headers={'Authorization': f'Bearer {Bearer_TOKEN}'},
+                         json=msg)
+    return str(r)
