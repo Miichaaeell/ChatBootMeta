@@ -26,7 +26,7 @@ def filtrar_dados(dados):
     return cliente, novo, fluxo
 
 def reply(usuario, novo, fluxo):
-    print(f'Cliente: {usuario['nome']} \nMensagem: {usuario['msg']}')
+    print(f'Cliente: {usuario["nome"]} \nMensagem: {usuario["msg"]}')
     print(f'Fluxo anterior: {fluxo}')
     if fluxo == 'atendimento' or 'atendimento' in usuario["msg"] or 'atendente' in usuario["msg"]:
         atualizar_fluxo(usuario['telefone'],'atendimento')
