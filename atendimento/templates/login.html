@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <form action="login" method="post" name="form_login"><h1>Login</h1>
+        <p>
+            <label for="username">Usuário: </label>
+            <input type="text" class="campo" name="username" id="username" placeholder="Nome do usuario">
+        </p>
+        <p>
+            <label for="senha">Senha:</label>
+            <input type="password" class="campo" name="senha" id="senha" placeholder="******">            
+        </p>
+        <p><output>{{erro}}</output></p>
+        <p>
+            <input type="submit" value="Logar">
+        </p>
+    
+    
+    </form>
+</body>
+</html>

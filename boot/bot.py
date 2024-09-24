@@ -1,11 +1,11 @@
-from flask import Blueprint, request
+from flask import Flask, Blueprint, request
 from boot.gerencia import filtrar_dados, reply, enviar_resposta
 from os import getenv
 
 token = getenv('TOKEN')
-boot = Blueprint('boot', __name__, template_folder='templates')
+robo = Blueprint('robo', __name__, template_folder='templates')
 
-@boot.route('/webhook', methods=['GET', 'POST'])
+@robo.route('/webhook', methods=['GET', 'POST'])
 def bot():
     if request.method == 'GET':
         key = request.args.get('hub.challenge')

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/geral.css">
+    <title>Início</title>
+</head>
+<body>
+    <header>
+        {% if current_user.previlegio == 'Administrador' %}
+        <h1>Chat</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="cadastro">Cadastrar novo usuario</a>
+            <a href="listar_usuarios">Listar usuarios</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% else %}
+        <h1>Chat</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% endif%}
+        
+    </header>
+    <hr class="horizontal">
+    <main>
+        <section id="conversas">
+            <h1>conversas</h1>
+            
+            {% for usuario in usuarios %}
+
+            <p class="mensagens">{{usuario.nome}} <br>{{usuario.usuario}}</p>
+
+            {%endfor%}
+        </section>
+            <hr>
+        <section id="cliente">
+            <p>
+                <h1>janela atual com cliente</h1>
+            </p>
+
+        </section>
+    </main>
+</body>
+</html>

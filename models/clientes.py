@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.orm import sessionmaker, declarative_base
+from flask_login import UserMixin
 from os import getenv
 import smtplib
 import email.message
@@ -21,6 +22,24 @@ class Cliente(Base):
         self.email = email
         self.telefone = telefone
         self.fluxo = fluxo
+
+
+
+class Funcionario(Base, UserMixin):
+    __tablename__ = 'funcionarios'
+    id = Column('id', Integer, autoincrement=True)
+    nome = Column('nome', String(42))
+    email = Column('email', String(42))
+    usuario = Column('usuario', String(42), primary_key=True)
+    senha = Column('senha', String(42))
+    previlegio = Column('previlegio', String(42))
+    def __init__(self,id, nome, email, usuario, senha, previlegio):
+        self.id = id
+        self.nome = nome
+        self.email = email
+        self.usuario = usuario
+        self.senha = senha
+        self.previlegio = previlegio
 
 Base.metadata.create_all(bind=db)
 

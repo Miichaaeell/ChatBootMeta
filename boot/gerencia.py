@@ -2,7 +2,7 @@ from models.clientes import session, Cliente, atualizar_fluxo
 from os import getenv
 from boot.respostas import *
 import requests
-from atendimento.atendimento import atendimento
+from atendimento.atendimento import atendente
 def filtrar_dados(dados):
     novo = False
     fluxo = ''
@@ -30,7 +30,7 @@ def reply(usuario, novo, fluxo):
     print(f'Fluxo anterior: {fluxo}')
     if fluxo == 'atendimento' or 'atendimento' in usuario["msg"] or 'atendente' in usuario["msg"]:
         atualizar_fluxo(usuario['telefone'],'atendimento')
-        resposta = atendimento(usuario['nome'], usuario['msg'])
+        resposta = atendente(usuario['nome'], usuario['msg'])
         if resposta.lower() == 'finalizado' or resposta == '':
             atualizar_fluxo(usuario['telefone'], 'inicial')
             return agradecimento(usuario['nome'])

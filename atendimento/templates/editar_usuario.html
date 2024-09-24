@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    {% if current_user.previlegio != 'Administrador'  %}
+    <script>
+        alert('Este usuário não tem permissão para acessar está pagina')
+    </script>
+    <meta http-equiv="refresh" content="0; url=inicio">
+    {% endif %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/editar_usuario.css">
+    <title>Editar Usuario</title>
+</head>
+<body>
+    <header>
+        <h1>Editar Usuario</h1>
+        <menu>
+            <a href="/inicio">Início</a>
+            <a href="/cadastro">Cadastrar novo usuario</a>
+            <a href="/listar_usuarios">Listar usuarios</a>
+            <a href="/painel">{{current_user.usuario}}</a>
+            <a href="/logout">Logout</a>
+        </menu>
+  
+        
+    </header>
+    <hr class="horizontal">
+    <main>
+        <form action="/listar_usuarios" method="post">
+            <h1>Editar {{usuario.usuario}}</h1>
+            <input type="text" name="id" id="id" value="{{usuario.id}}" hidden >
+            <p>
+                <label for="nome">Nome: </label>
+                <input type="text" name="nome" id="nome" value="{{usuario.nome}}">
+            </p>
+            <p>
+                <label for="usuario">Usuario: </label>
+                <input type="text" name="usuario" id="usuario" value="{{usuario.usuario}}">
+            </p>
+            <p>
+                <label for="email">E-mail: </label>
+                <input type="email" name="email" id="email" value="{{usuario.email}}" size="27">
+            </p>
+            <p>
+                <label for="senha">Senha: </label>
+                <input type="password" name="senha" id="senha" value="{{usuario.senha}}">
+            </p>
+            <p>
+                <label for="previlegio">Previlegio: </label>
+                <select name="previlegio" id="previlegio">
+                    <optgroup label="Selecionado">
+                        <option value="{{usuario.previlegio}}">{{usuario.previlegio}}</option>
+                    </optgroup>
+                    <optgroup label="Previlegios">
+                        <option value="Administrador">Administrador</option>
+                        <option value="User">User</option>
+                    </optgroup>
+                </select>
+            </p>
+            <p>
+                <input type="submit" value="Salvar">
+            </p>
+        </form>
+    </main>
+</body>
+</html>

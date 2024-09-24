@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/painel.css">
+    <title>Painel</title>
+</head>
+<body>
+    <header>
+        {% if current_user.previlegio == 'Administrador' %}
+        <h1>Painel</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="cadastro">Cadastrar novo usuario</a>
+            <a href="listar_usuarios">Listar usuarios</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% else %}
+        <h1>Painel</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% endif%}
+        
+    </header>
+    <hr class="horizontal">
+    <main>
+        <section id="ações">
+            <p><input type="button" value="Alterar Senha"></p>
+            {% if current_user.previlegio == 'Administrador' %}
+            <p><input type="button" value="Alterar dados"></p>
+            {% endif %}
+        </section>
+        <section id="dados_cadastrais">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">Dados Cadastrais</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Nome:</th>
+                        <td>{{current_user.nome}}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail:</th>
+                        <td>{{current_user.email}}</td>
+                    </tr>
+                    <tr>
+                        <th>Usuario:</th>
+                        <td>{{current_user.usuario}}</td>
+                    </tr>
+                    <tr>
+                        <th>Previlégio:</th>
+                        <td>{{current_user.previlegio}}</td>
+                    </tr>
+                </tbody>
+
+
+            </table>
+        </section>
+    </main>
+
+</body>
+</html>
