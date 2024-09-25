@@ -54,3 +54,7 @@ output{
     color: red;
     font-size: bolder;
 }
+
+#olho, #olho1 {
+    transform: translate(-33px, 5px);
+}
