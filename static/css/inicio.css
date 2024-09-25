@@ -1,0 +1,21 @@
+@charset "UTF-8";
+main{
+    display: flex;
+}
+#conversas > h1, p {
+    width: 200px;
+    max-width: 200px;
+    text-align: center;
+    margin-top: 10px;
+}
+#conversas > p{
+    border: 1px solid black;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.459);
+    
+}
+#conversas > p:hover{
+    background-color: rgba(128, 128, 128, 0.39);
+    cursor: pointer;
+}

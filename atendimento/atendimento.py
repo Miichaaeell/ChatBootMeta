@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from models.clientes import Funcionario, session
-
 
 
 atendimento = Blueprint('atendimento', __name__, template_folder='templates')
@@ -9,7 +8,8 @@ atendimento = Blueprint('atendimento', __name__, template_folder='templates')
 @atendimento.route('/inicio', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template('inicio.html')
+    return render_template('inicio.html', mensagem=mensagens)
+
 @atendimento.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -37,8 +37,7 @@ def cadastro():
         usuario = request.form.get('username')
         senha = request.form.get('senha')
         previlegio = request.form.get('previlegio')
-        id = session.query(Funcionario).count() + 1
-        new_user = Funcionario(id, nome, email, usuario, senha, previlegio)
+        new_user = Funcionario(nome, email, usuario, senha, previlegio)
         session.add(new_user)
         session.commit()
         return redirect('inicio')
@@ -89,6 +88,25 @@ def editar(user):
 @login_required
 def excluir(user):
     return f'excluir {user}'
+
+@atendimento.route('/alterar_senha', methods=['GET', 'POST'])
+@login_required
+def alterarsenha():
+    if request.method == 'GET':
+        return render_template('alterar_senha.html')
+    else:
+        senha = request.form.get('senha')
+        user = session.query(Funcionario).filter_by(id=current_user.id).first()
+        user.senha = senha
+        session.add(user)
+        session.commit()
+        logout_user()
+        return redirect('login')
+@atendimento.route('/detalhes/<user>')
+@login_required
+def detalhes_usuario(user):
+    usuario = session.query(Funcionario).filter_by(usuario=user).first()
+    return render_template('detalhes_usuario.html', usuario=usuario)
 def atendente(nome, msg):
     print(f'Nome do cliente -> {nome}')
     print(f'Mensagem do cliente -> {msg}')
@@ -97,10 +115,10 @@ def atendente(nome, msg):
 
 
 mensagens = [
-    {'Numero1': 'xxxxx',
-     'mensagem': 'xxxx1'},
-    {'Numero2': 'xxxxx',
-     'mensagem': 'xxxx2'},
-    {'Numero3': 'xxxxx',
-     'mensagem': 'xxxx3'}
+    {'nome': 'Morelo',
+     'mensagem': ['Perdeu Evandro']},
+    {'nome': 'Evandro',
+     'mensagem': ['Vem me pegar', 'arruma nada']},
+    {'nome': 'Andreia',
+     'mensagem': ['Invade!! vai logo porra vai vai vai', 'ele esta fugindo, corre!!', 'la em cima pega ele']}
 ]

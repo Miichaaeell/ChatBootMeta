@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/css/geral.css">
+    <link rel="stylesheet" href="/static/css/inicio.css">
     <title>Início</title>
 </head>
 <body>
@@ -32,19 +33,29 @@
     <hr class="horizontal">
     <main>
         <section id="conversas">
-            <h1>conversas</h1>
+            <h1>Conversas</h1>
             
-            {% for usuario in usuarios %}
+            {% for mensagem in mensagem %}
 
-            <p class="mensagens">{{usuario.nome}} <br>{{usuario.usuario}}</p>
+            <p class="mensagens"><strong>{{mensagem.nome}} </strong> <br>
+                {{mensagem.mensagem[-1]}}
+            </p>
 
             {%endfor%}
         </section>
             <hr>
         <section id="cliente">
-            <p>
-                <h1>janela atual com cliente</h1>
-            </p>
+            <div>
+                <strong><h3>{{mensagem[2]['nome']}}</h3></strong>
+
+                {% for mensagem in mensagem[2]['mensagem'] %}
+
+                <p>{{mensagem}}</p>
+                
+                {%endfor%}
+            
+            </div>
+            
 
         </section>
     </main>

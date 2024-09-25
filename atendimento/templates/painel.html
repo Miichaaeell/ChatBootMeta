@@ -33,10 +33,7 @@
     <hr class="horizontal">
     <main>
         <section id="ações">
-            <p><input type="button" value="Alterar Senha"></p>
-            {% if current_user.previlegio == 'Administrador' %}
-            <p><input type="button" value="Alterar dados"></p>
-            {% endif %}
+            <p><input type="button" value="Alterar Senha" onclick="alterar()"></p>
         </section>
         <section id="dados_cadastrais">
             <table>
@@ -68,6 +65,11 @@
             </table>
         </section>
     </main>
+    <script>
+        function alterar(){
+            window.location.href = 'alterar_senha'
+        }
+    </script>    
 
 </body>
 </html>

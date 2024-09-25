@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Integer
+from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
 from sqlalchemy.orm import sessionmaker, declarative_base
 from flask_login import UserMixin
 from os import getenv
@@ -12,10 +12,10 @@ Base = declarative_base()
 # criar a tabela
 class Cliente(Base):
     __tablename__ = 'clientes'
-    id = Column("id", Integer, autoincrement=True)
+    id = Column("id", Integer, primary_key=True, autoincrement=True)
     nome = Column('nome', String(42))
     email = Column('email', String(42))
-    telefone = Column('telefone', String(20), primary_key=True)
+    telefone = Column('telefone', String(20), unique=True)
     fluxo = Column('fluxo', String(42))
     def __init__(self, nome = '', email = '',telefone = '', fluxo = 'inicial'):
         self.nome = nome
@@ -27,21 +27,30 @@ class Cliente(Base):
 
 class Funcionario(Base, UserMixin):
     __tablename__ = 'funcionarios'
-    id = Column('id', Integer, autoincrement=True)
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
     nome = Column('nome', String(42))
     email = Column('email', String(42))
-    usuario = Column('usuario', String(42), primary_key=True)
+    usuario = Column('usuario', String(42), unique=True)
     senha = Column('senha', String(42))
     previlegio = Column('previlegio', String(42))
-    def __init__(self,id, nome, email, usuario, senha, previlegio):
-        self.id = id
+    def __init__(self, nome, email, usuario, senha, previlegio):
         self.nome = nome
         self.email = email
         self.usuario = usuario
         self.senha = senha
         self.previlegio = previlegio
 
+class Mensagens(Base):
+    __tablename__ = 'mensagens'
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    mensagem = Column('mensagem', String)
+    cliente = Column('cliente', ForeignKey("clientes.telefone"))
+    def __init__(self, mensagem, telefone):
+        self.mensagem = mensagem
+        self.telefone = telefone
+
 Base.metadata.create_all(bind=db)
+
 
 def atualizar_fluxo(telefone, fluxo):
     cliente = session.query(Cliente).filter_by(telefone = telefone).first()

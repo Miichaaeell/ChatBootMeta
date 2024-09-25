@@ -43,6 +43,7 @@
                 <td>{{usuario.nome}}</td>
                 <td>{{usuario.usuario}}</td>
                 <td class="botao">
+                    <input type="button" value="Detalhes" class="Detalhes" onclick="detalhes('{{usuario.usuario}}')">
                     <input type="button" value="Editar" class="editar" onclick="editar('{{usuario.usuario}}')">
                     <input type="button" value="Excluir" class="Excluir" onclick="excluir('{{usuario.usuario}}')">
                 </td>
@@ -63,6 +64,9 @@
         function excluir(user){
             confirmar = window.confirm(`Deseja realmente excluir o usuário ${user}`)
             window.location.href = confirmar == true ? `excluir/${user}` : ''
+        }
+        function detalhes(user){
+            window.location.href = `detalhes/${user}`
         }
     </script>
 </body>

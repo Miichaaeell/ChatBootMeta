@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/alterar_senha.css">
+    <link rel="shortcut icon" href="/static/imagens/whats_ico.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Alterar Senha</title>
+</head>
+<body>
+    <header>
+        {% if current_user.previlegio == 'Administrador' %}
+        <h1>Alterar senha</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="cadastro">Cadastrar novo usuario</a>
+            <a href="listar_usuarios">Listar usuarios</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% else %}
+        <h1>Chat</h1>
+        <menu>
+            <a href="inicio">Início</a>
+            <a href="painel">{{current_user.usuario}}</a>
+            <a href="logout">Logout</a>
+        </menu>
+
+        {% endif%}
+        
+    </header>
+    <hr class="horizontal">
+    <main>
+        <form action="alterar_senha" method="post">
+            <label for="senha">Nova Senha: </label>
+            <input type="password" name="senha" id="senha" required minlength="8">
+            <span class="material-symbols-sharp" id="olho" onclick="mostrar()" style="display: inline-block;" >
+                visibility
+            </span> 
+            <span class="material-symbols-sharp" id="olho1" onclick="mostrar()" style="display: none;" >
+                visibility_off
+            </span>    
+            <p><input type="submit" value="Enviar"></p>
+
+        </form>
+    </main>
+    <script>
+        function mostrar() {
+            let senha = document.querySelector('#senha')
+        let olho = document.querySelector('#olho')
+        let olho1 = document.querySelector('#olho1')
+        senha.type = senha.type == 'text' ? 'password' : 'text'
+        olho.style = senha.type == 'text' ? 'display: none' : 'display:  inline-block'
+        olho1.style = senha.type == 'text' ? 'display: inline-block' : 'display: none'
+        }
+    </script>
+</body>
+</html>
