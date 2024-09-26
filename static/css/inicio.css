@@ -19,3 +19,10 @@ main{
     background-color: rgba(128, 128, 128, 0.39);
     cursor: pointer;
 }
+#cliente {
+    width: 100%;
+}
+div> h1{
+    text-align: center;
+
+}

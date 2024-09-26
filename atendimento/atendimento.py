@@ -1,14 +1,35 @@
 from flask import Blueprint, render_template, request, redirect, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from models.clientes import Funcionario, session
-
+from models.clientes import Funcionario, session, Cliente, Mensagens
 
 atendimento = Blueprint('atendimento', __name__, template_folder='templates')
 
 @atendimento.route('/inicio', methods=['GET', 'POST'])
 @login_required
 def home():
-    return render_template('inicio.html', mensagem=mensagens)
+    users = session.query(Cliente.nome, Mensagens.mensagem).join(Mensagens).order_by(Cliente.nome).all()
+    usuario = []
+    for user in users:
+        client = {}
+        if len(usuario) == 0:
+            client['nome'] = user[0]
+            client['mensagem'] = [user[1]]
+            usuario.append(client)
+        else:
+            new = True
+            for carinha in usuario:
+                if user[0] == carinha['nome']:
+                    new = False
+            if new == True:
+                client['nome'] = user[0]
+                client['mensagem'] = [user[1]]
+                usuario.append(client)
+            else:
+                for carinha in usuario:
+                    if user[0] == carinha['nome']:
+                        carinha['mensagem'].append(user[1])
+    print(usuario)
+    return render_template('inicio.html', clientes=usuario)
 
 @atendimento.route('/login', methods=['GET', 'POST'])
 def login():
@@ -112,13 +133,3 @@ def atendente(nome, msg):
     print(f'Mensagem do cliente -> {msg}')
     resposta = input(f'Resposta -> ')
     return str(resposta)
-
-
-mensagens = [
-    {'nome': 'Morelo',
-     'mensagem': ['Perdeu Evandro']},
-    {'nome': 'Evandro',
-     'mensagem': ['Vem me pegar', 'arruma nada']},
-    {'nome': 'Andreia',
-     'mensagem': ['Invade!! vai logo porra vai vai vai', 'ele esta fugindo, corre!!', 'la em cima pega ele']}
-]

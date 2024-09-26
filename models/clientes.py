@@ -44,10 +44,10 @@ class Mensagens(Base):
     __tablename__ = 'mensagens'
     id = Column('id', Integer, primary_key=True, autoincrement=True)
     mensagem = Column('mensagem', String)
-    cliente = Column('cliente', ForeignKey("clientes.telefone"))
-    def __init__(self, mensagem, telefone):
+    cliente = Column('cliente', ForeignKey("clientes.id"))
+    def __init__(self, mensagem, cliente):
         self.mensagem = mensagem
-        self.telefone = telefone
+        self.cliente = cliente
 
 Base.metadata.create_all(bind=db)
 

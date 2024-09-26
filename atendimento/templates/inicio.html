@@ -35,10 +35,11 @@
         <section id="conversas">
             <h1>Conversas</h1>
             
-            {% for mensagem in mensagem %}
+            {% for cliente in clientes %}
 
-            <p class="mensagens"><strong>{{mensagem.nome}} </strong> <br>
-                {{mensagem.mensagem[-1]}}
+            <p class="mensagens" onclick="conversa()"><strong>{{cliente.nome}} </strong><br>
+                {{cliente.mensagem[-1]}}
+                
             </p>
 
             {%endfor%}
@@ -46,18 +47,22 @@
             <hr>
         <section id="cliente">
             <div>
-                <strong><h3>{{mensagem[2]['nome']}}</h3></strong>
+                <h1>janela principal de conversa</h1>
+               <div id="teste">
 
-                {% for mensagem in mensagem[2]['mensagem'] %}
-
-                <p>{{mensagem}}</p>
-                
-                {%endfor%}
+               </div>
             
             </div>
             
 
         </section>
     </main>
+
+    <script>
+        function conversa(user){
+            console.log(user)
+        }
+
+    </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from models.clientes import session, Cliente, atualizar_fluxo
+from models.clientes import session, Cliente, atualizar_fluxo, Mensagens
 from os import getenv
 from boot.respostas import *
 import requests
@@ -12,7 +12,7 @@ def filtrar_dados(dados):
     cliente['msg'] = dados['entry'][0]['changes'][0]['value']['messages'][0]['text']['body']
     cliente['remetente'] = dados['entry'][0]['changes'][0]['value']['metadata']['phone_number_id']
     cliente['id'] = dados['entry'][0]['changes'][0]['value']['messages'][0]['id']
-    clientes = session.query(Cliente).filter_by(telefone = cliente['telefone']).first()
+    clientes = session.query(Cliente).filter_by(telefone=cliente['telefone']).first()
     if not clientes:
         new_cliente = Cliente(nome=cliente['nome'], telefone=cliente['telefone'])
         session.add(new_cliente)
@@ -21,6 +21,10 @@ def filtrar_dados(dados):
         fluxo = 'inicial'
     else:
         fluxo = clientes.fluxo
+    user = session.query(Cliente).filter_by(telefone=cliente['telefone']).first()
+    msg = Mensagens(cliente['msg'], user.id)
+    session.add(msg)
+    session.commit()
 
 
     return cliente, novo, fluxo
